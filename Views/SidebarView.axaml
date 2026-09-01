@@ -1,0 +1,37 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:MyAvaloniaApp.ViewModels"
+    x:Class="MyAvaloniaApp.Views.SidebarView"
+    x:Name="Sidebar"
+    x:DataType="vm:SidebarViewModel">
+
+    <StackPanel>
+
+        <TextBlock
+            Text="ShopManager"
+            FontSize="24"
+            Margin="15"/>
+
+        <ItemsControl
+            ItemsSource="{Binding Items}">
+
+            <ItemsControl.ItemTemplate>
+
+                <DataTemplate>
+
+                    <Button
+                        Content="{Binding Name}"
+                        Margin="5"
+                        Command="{Binding DataContext.SelectItemCommand, ElementName=Sidebar}"
+                        CommandParameter="{Binding}"/>
+
+                </DataTemplate>
+
+            </ItemsControl.ItemTemplate>
+
+        </ItemsControl>
+
+    </StackPanel>
+
+</UserControl>
