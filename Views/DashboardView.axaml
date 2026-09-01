@@ -1,0 +1,31 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:MyAvaloniaApp.ViewModels"
+    xmlns:views="using:MyAvaloniaApp.Views"
+    x:Class="MyAvaloniaApp.Views.DashboardView"
+    x:DataType="vm:DashboardViewModel">
+
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="vm:HomeViewModel">
+            <views:HomeView/>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+
+    <Grid ColumnDefinitions="200,*">
+
+        <!-- Sidebar -->
+        <views:SidebarView
+            Grid.Column="0"
+            DataContext="{Binding Sidebar}"/>
+
+
+
+        <!-- Contenido de la página seleccionada -->
+        <ContentControl
+            Grid.Column="1"
+            Content="{Binding CurrentPageViewModel}"/>
+
+    </Grid>
+
+</UserControl>

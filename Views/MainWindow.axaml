@@ -1,0 +1,24 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:MyAvaloniaApp.ViewModels"
+    xmlns:views="using:MyAvaloniaApp.Views"
+    x:Class="MyAvaloniaApp.Views.MainWindow"
+    x:DataType="vm:MainWindowViewModel">
+
+    <Window.DataTemplates>
+
+        <DataTemplate DataType="vm:LoginViewModel">
+            <views:LoginView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:DashboardViewModel">
+            <views:DashboardView/>
+        </DataTemplate>
+
+    </Window.DataTemplates>
+
+    <ContentControl
+        Content="{Binding CurrentViewModel}"/>
+
+</Window>
