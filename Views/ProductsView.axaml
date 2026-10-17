@@ -1,10 +1,70 @@
-<UserControl
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    x:Class="MyAvaloniaApp.Views.ProductsView">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MyAvaloniaApp.ViewModels"
+             x:Class="MyAvaloniaApp.Views.ProductsView"
+             x:DataType="vm:ProductsViewModel">
 
-    <TextBlock
-        Text="Productos"
-        FontSize="30"/>
+    <Grid ColumnDefinitions="350, *" Margin="20">
+        
+        <!-- ================= COLUMNA IZQUIERDA: Formulario de Carga ================= -->
+        <StackPanel Grid.Column="0" Spacing="10" Margin="0,0,20,0">
+            <TextBlock Text="Gestión de Productos" FontWeight="Bold" FontSize="18"/>
+            <TextBlock Text="Cargar Nuevo Producto" FontSize="14" Foreground="Gray"/>
+            
+            <TextBlock Text="Nombre:" Margin="0,10,0,0"/>
+            <TextBox Text="{Binding InputName}"/>
+            
+            <TextBlock Text="Precio:"/>
+            <TextBox Text="{Binding InputPrice}"/>
+            
+            <TextBlock Text="Stock:"/>
+            <TextBox Text="{Binding InputStock}"/>
+            
+            <Button Content="Guardar Producto" 
+                    Command="{Binding SaveProductCommand}" 
+                    HorizontalAlignment="Stretch"
+                    Margin="0,15,0,0"/>
+        </StackPanel>
 
+        <!-- ================= COLUMNA DERECHA: Listado de Productos ================= -->
+        <StackPanel Grid.Column="1" Spacing="10">
+            <TextBlock Text="Listado de Productos" FontWeight="Bold" FontSize="18"/>
+            
+            <ListBox ItemsSource="{Binding Products}" Height="400">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <!-- ⭐ Definimos 5 columnas bien separadas para que nada se solape -->
+                        <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto" Margin="5" VerticalAlignment="Center">
+                            
+                            <!-- 0: Nombre del producto -->
+                            <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" VerticalAlignment="Center"/>
+                            
+                            <!-- 1: Precio -->
+                            <TextBlock Grid.Column="1" Text="{Binding Price, StringFormat='Precio: ${0}'}" Margin="10,0" VerticalAlignment="Center"/>
+                            
+                            <!-- 2: Stock -->
+                            <TextBlock Grid.Column="2" Text="{Binding Stock, StringFormat='Stock: {0} un.'}" Margin="10,0" VerticalAlignment="Center"/>
+                            
+                            <!-- 3: Botón Editar -->
+                            <Button Grid.Column="3" 
+                                    Content="Editar" 
+                                    Command="{Binding $parent[UserControl].((vm:ProductsViewModel)DataContext).EditProductCommand}"
+                                    CommandParameter="{Binding Id}"
+                                    Margin="10,0,0,0"/>
+
+                            <!-- 4: Botón Eliminar -->
+                            <Button Grid.Column="4" 
+                                    Content="Eliminar" 
+                                    Command="{Binding $parent[UserControl].((vm:ProductsViewModel)DataContext).DeleteProductCommand}"
+                                    CommandParameter="{Binding Id}"
+                                    Background="#ff4444" 
+                                    Foreground="White"
+                                    Margin="5,0,0,0"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+    </Grid>
 </UserControl>

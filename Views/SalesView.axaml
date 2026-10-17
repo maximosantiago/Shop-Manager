@@ -1,10 +1,75 @@
-<UserControl
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    x:Class="MyAvaloniaApp.Views.SalesView">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MyAvaloniaApp.ViewModels"
+             x:Class="MyAvaloniaApp.Views.SalesView"
+             x:DataType="vm:SalesViewModel">
 
-    <TextBlock
-        Text="Ventas"
-        FontSize="30"/>
+    <Grid ColumnDefinitions="*, *" Margin="20">
 
+        <!-- ================= COLUMNA IZQUIERDA: Productos Disponibles ================= -->
+        <StackPanel Grid.Column="0" Spacing="10" Margin="0,0,10,0">
+            <TextBlock Text="Productos en Stock" FontWeight="Bold" FontSize="18"/>
+
+            <ListBox ItemsSource="{Binding AvailableProducts}" Height="450">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*, Auto, Auto" Margin="5" VerticalAlignment="Center">
+                            <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Stock, StringFormat='Stock: {0}'}" Margin="10,0" VerticalAlignment="Center"/>
+
+                            <!-- Botón para mandar al carrito -->
+                            <Button Grid.Column="2"
+                                    Content="Agregar"
+                                    Command="{Binding $parent[UserControl].((vm:SalesViewModel)DataContext).AddToCartCommand}"
+                                    CommandParameter="{Binding}"
+                                    Margin="10,0,0,0"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+        <!-- ================= COLUMNA DERECHA: El Carrito de Ventas ================= -->
+        <StackPanel Grid.Column="1" Spacing="10" Margin="10,0,0,0">
+            <TextBlock Text="Carrito de Compras" FontWeight="Bold" FontSize="18"/>
+
+            <!-- Listado del Carrito -->
+            <ListBox ItemsSource="{Binding CartItems}" Height="300">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*, Auto, Auto, Auto" Margin="5" VerticalAlignment="Center">
+                            <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Quantity, StringFormat='x{0}'}" Margin="10,0" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Total, StringFormat='${0}'}" Margin="10,0" VerticalAlignment="Center"/>
+
+                            <Button Grid.Column="3"
+                                    Content="X"
+                                    Command="{Binding $parent[UserControl].((vm:SalesViewModel)DataContext).RemoveFromCartCommand}"
+                                    CommandParameter="{Binding}"
+                                    Background="#ff4444" Foreground="White"
+                                    Margin="10,0,0,0"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!-- Total, botón de cobrar y mensaje de estado -->
+            <StackPanel Spacing="10" Margin="0,20,0,0">
+                <TextBlock Text="{Binding GrandTotal, StringFormat='Total a Pagar: ${0}'}"
+                           FontSize="20" FontWeight="Bold" Foreground="Green"/>
+
+                <Button Content="Finalizar Venta / Cobrar"
+                        Command="{Binding CheckoutCommand}"
+                        HorizontalAlignment="Stretch"
+                        Background="Green" Foreground="White"
+                        Padding="10"/>
+
+                <!-- Muestra "Procesando...", "Venta registrada" o el error -->
+                <TextBlock Text="{Binding StatusMessage}"
+                           TextWrapping="Wrap"
+                           Foreground="#C62828"/>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
 </UserControl>

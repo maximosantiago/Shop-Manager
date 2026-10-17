@@ -10,6 +10,16 @@
         <DataTemplate DataType="vm:HomeViewModel">
             <views:HomeView/>
         </DataTemplate>
+        <!-- Agregá estas tres líneas para las demás vistas -->
+        <DataTemplate DataType="vm:ProductsViewModel">
+            <views:ProductsView/>
+        </DataTemplate>
+        <DataTemplate DataType="vm:HistoryViewModel">
+            <views:HistoryView/>
+        </DataTemplate>
+        <DataTemplate DataType="vm:SalesViewModel">
+            <views:SalesView/>
+        </DataTemplate>
     </UserControl.DataTemplates>
 
     <Grid ColumnDefinitions="200,*">
@@ -18,8 +28,6 @@
         <views:SidebarView
             Grid.Column="0"
             DataContext="{Binding Sidebar}"/>
-
-
 
         <!-- Contenido de la página seleccionada -->
         <ContentControl

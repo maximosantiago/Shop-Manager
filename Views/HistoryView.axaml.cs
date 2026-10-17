@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace MyAvaloniaApp.Views;
 
-public partial class ClientsView : UserControl
+public partial class HistoryView : UserControl
 {
-    public ClientsView()
+    public HistoryView()
     {
         InitializeComponent();
     }

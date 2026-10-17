@@ -7,9 +7,7 @@ public class DashboardViewModel : INotifyPropertyChanged
 {
     public MainWindowViewModel MainViewModel { get; }
     
-    private object _currentPageViewModel;
-
-    
+    private object _currentPageViewModel = new HomeViewModel();
     public object CurrentPageViewModel
     {
         get => _currentPageViewModel;
@@ -20,28 +18,37 @@ public class DashboardViewModel : INotifyPropertyChanged
         }
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
     public SidebarViewModel Sidebar { get; }
 
     public DashboardViewModel(MainWindowViewModel mainWindowViewModel)
     {
         MainViewModel = mainWindowViewModel;
-
         Sidebar = new SidebarViewModel(this);
-
-        CurrentPageViewModel = new HomeViewModel();
     }
+
     public void ChangeCurrentPage(object viewModel)
     {
+        // Al navegar, actualizamos de forma asincrónica sin congelar la UI
+        if (viewModel is SalesViewModel salesVm)
+        {
+            _ = salesVm.LoadAvailableProductsAsync();
+        }
+        else if (viewModel is HistoryViewModel historyVm)
+        {
+            _ = historyVm.LoadSalesHistoryAsync();
+        }
+        else if (viewModel is ProductsViewModel productsVm)
+        {
+            _ = productsVm.LoadProductsAsync();
+        }
+
         CurrentPageViewModel = viewModel;
     }
 
-    protected void OnPropertyChanged(
-        [CallerMemberName] string? propertyName = null)
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
-        PropertyChanged?.Invoke(
-            this,
-            new PropertyChangedEventArgs(propertyName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
