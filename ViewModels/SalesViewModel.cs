@@ -116,7 +116,7 @@ public class SalesViewModel : ViewModelBase
         {
             using var db = new AppDbContext();
 
-            // 1. Crear el registro de venta con sus ítems (fecha en UTC)
+            // Crear el registro de venta con sus ítems (fecha en UTC)
             var newSale = new SaleRecord
             {
                 Date = DateTime.UtcNow,
